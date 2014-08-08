@@ -2,6 +2,7 @@ import threading
 import time
 import Queue
 import subprocess
+import sys, getopt
 import Adafruit_BBIO.UART as UART
 import Adafruit_BBIO.GPIO as GPIO
 
@@ -14,46 +15,6 @@ class CpGpioMap():
     GPIO_CELLRESET = "P9_23"
     GPIO_CELLONOFF = "P8_12"
     GPIO_CELLPWRMON = "P9_42"
-    
-class CpConsole(threading.Thread):
-    
-    def __init__(self, *args):
-        self._target = self.console_handler
-        self._args = args
-        self.__lock = threading.Lock()
-        self.closing = False # A flag to indicate thread shutdown
-        threading.Thread.__init__(self)
-        
-    def run(self):
-        self._target(*self._args)
-    
-    def comm_callback_handler(self, result):
-        print "comm_callback_handler ", result
-        
-    def shutdown_thread(self):
-        print 'shutting down CpConsole...'
-        self.__lock.acquire()
-        self.closing = True
-        self.__lock.release()
-        
-    def console_handler(self):
-        
-        input=1
-        while not self.closing:
-            # get keyboard input
-            input = raw_input(">> ")
-                # Python 3 users
-                # input = input(">> ")
-            if input == 'exit' or input == 'EXIT':
-                self.shutdown_thread()
-            elif input == 'pon' or input == 'PON':
-                auto_pon()
-            elif input == 'poff' or input == 'POFF':
-                auto_poff()
-                
-            
-                
-            time.sleep(.005)
             
 
 # !!! This method must be called before creating the modem object !!!
@@ -75,7 +36,7 @@ def modem_init():
     GPIO.output(CpGpioMap.GPIO_CELLENABLE, GPIO.LOW)
     GPIO.output(CpGpioMap.GPIO_CELLRESET, GPIO.LOW)
     GPIO.output(CpGpioMap.GPIO_CELLONOFF, GPIO.LOW)
-    
+    print 'Initializing Modem...'
     while True:
         if GPIO.input(CpGpioMap.GPIO_CELLPWRMON):
             print "GPIO_CELLPWRMON=LOW"
@@ -99,10 +60,8 @@ def modem_init():
         
     print 'Modem Initialized' 
 
-def auto_pon():
-    
-
-    provider = 'verizon'
+def auto_pon(provider):
+    #provider = 'verizon'
     
     print 'pon ' + provider + ':'
     
@@ -116,7 +75,6 @@ def auto_pon():
     
 def auto_poff():
     
-
     provider = 'verizon'
     
     print 'poff ' + provider + ':'
@@ -127,24 +85,46 @@ def auto_poff():
     
     print "Results:"
     print response[0]
-    
-def route_add():
-    
-    ### Static route with route add
-    # route add -host PPP_ROUTE dev ppp0
-    
-    
-    print "Adding static route: " + PPP_ROUTE
 
-    proc = subprocess.Popen(['route', 'add', '-host', PPP_ROUTE, 'dev', 'ppp0'],stdout=subprocess.PIPE)
+
+def main(argv):
     
-    #print "Process Id: %d" % proc.pid       
+    runas = 'kore'
+    try:
+        opts, args = getopt.getopt(argv,"hp:",["provider="])
+    except getopt.GetoptError:
+        print 'enablemodempy -p <kore>|<verizon>|<att>'
+        sys.exit(2)
         
+    for opt, arg in opts:
+        if opt == '-h':
+            print 'main.py.py -p <kore>|<verizon>|<att>'
+            sys.exit()
+        elif opt in ("-p", "--provider"):
+            print "Starting thread main..."
+            provider = arg.strip()
+            
+            modem_init()
+            
+            time.sleep(5)
+            auto_pon(provider)
+            
+            while True:
+                time.sleep(.005)
+            
+            print 'Exiting App...'
+            exit()
+        else:
+            print 'Invalid provider parameter'
+            
+               
 if __name__ == '__main__':
     
+    main(sys.argv[1:])
     
+    '''
     modem_init()
-    #route_add()
+
     time.sleep(5)
     auto_pon()
     
@@ -159,3 +139,5 @@ if __name__ == '__main__':
 
     print 'Exiting App...'
     exit()
+    '''
+ 
