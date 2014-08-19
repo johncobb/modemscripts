@@ -20,13 +20,6 @@ class CpGpioMap():
 # !!! This method must be called before creating the modem object !!!
 def modem_init():
 
-    print 'Setting up UART1...'
-    UART.setup("UART1")
-    print 'Setting up UART2...'
-    UART.setup("UART2")
-    print 'Setting up UART4...'
-    UART.setup("UART4")
-    
     print 'Initializing GPIO(s)'
     GPIO.setup(CpGpioMap.GPIO_CELLENABLE, GPIO.OUT) #CELL_ENABLE
     GPIO.setup(CpGpioMap.GPIO_CELLRESET, GPIO.OUT) #CELL_RESET
@@ -38,14 +31,14 @@ def modem_init():
     GPIO.output(CpGpioMap.GPIO_CELLONOFF, GPIO.LOW)
     print 'Initializing Modem...'
     while True:
-        if GPIO.input(CpGpioMap.GPIO_CELLPWRMON):
+        time.sleep(3)
+        if not GPIO.input(CpGpioMap.GPIO_CELLPWRMON):
             print "GPIO_CELLPWRMON=LOW"
             break
         else:
             GPIO.output(CpGpioMap.GPIO_CELLENABLE, GPIO.HIGH)
             time.sleep(.01) # 10ms
             GPIO.output(CpGpioMap.GPIO_CELLENABLE, GPIO.LOW)
-            time.sleep(.002) # 2ms
             
     while True:
         print "TOGGLE GPIO_CELLONOFF:HIGH wait 3 sec."
@@ -57,7 +50,14 @@ def modem_init():
         if GPIO.input(CpGpioMap.GPIO_CELLPWRMON):
             print "GPIO_CELLPWRMON=HIGH"
             break
-        
+
+    print 'Setting up UART1...'
+    UART.setup("UART1")
+    print 'Setting up UART2...'
+    UART.setup("UART2")
+    print 'Setting up UART4...'
+    UART.setup("UART4")
+    
     print 'Modem Initialized' 
 
 def auto_pon(provider):
