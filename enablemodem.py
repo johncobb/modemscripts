@@ -3,60 +3,63 @@ import time
 import Queue
 import subprocess
 import sys, getopt
-import Adafruit_BBIO.UART as UART
-import Adafruit_BBIO.GPIO as GPIO
+#import Adafruit_BBIO.UART as UART
+#import Adafruit_BBIO.GPIO as GPIO
+import wiringpi as GPIO
 
 
-#PPP_ROUTE = 'appserver05.cphandheld.com'
-PPP_ROUTE = '23.253.112.132'
 
 class CpGpioMap():
-    GPIO_CELLENABLE = "P9_12"
-    GPIO_CELLRESET = "P9_23"
-    GPIO_CELLONOFF = "P8_12"
-    GPIO_CELLPWRMON = "P9_42"
+    GPIO_CELLENABLE = 17
+    GPIO_CELLRESET = 6
+    GPIO_CELLONOFF = 5
+    GPIO_CELLPWRMON = 26
+    GPIO_LED1 = 23
+    GPIO_LED2 = 24
+
             
 
 # !!! This method must be called before creating the modem object !!!
 def modem_init():
 
     print 'Initializing GPIO(s)'
-    GPIO.setup(CpGpioMap.GPIO_CELLENABLE, GPIO.OUT) #CELL_ENABLE
-    GPIO.setup(CpGpioMap.GPIO_CELLRESET, GPIO.OUT) #CELL_RESET
-    GPIO.setup(CpGpioMap.GPIO_CELLONOFF, GPIO.OUT) #CELL_ONOFF
-    GPIO.setup(CpGpioMap.GPIO_CELLPWRMON, GPIO.IN) #CELL_PWRMON
+    GPIO.pinMode(CpGpioMap.GPIO_CELLENABLE, GPIO.OUTPUT) #CELL_ENABLE
+    GPIO.pinMode(CpGpioMap.GPIO_CELLRESET, GPIO.OUTPUT) #CELL_RESET
+    GPIO.pinMode(CpGpioMap.GPIO_CELLONOFF, GPIO.OUTPUT) #CELL_ONOFF
+    GPIO.pinMode(CpGpioMap.GPIO_CELLPWRMON, GPIO.INPUT) #CELL_PWRMON
     
-    GPIO.output(CpGpioMap.GPIO_CELLENABLE, GPIO.LOW)
-    GPIO.output(CpGpioMap.GPIO_CELLRESET, GPIO.LOW)
-    GPIO.output(CpGpioMap.GPIO_CELLONOFF, GPIO.LOW)
+    GPIO.digitalWrite(CpGpioMap.GPIO_CELLENABLE, GPIO.GPIO.LOW)
+    GPIO.digitalWrite(CpGpioMap.GPIO_CELLRESET, GPIO.GPIO.LOW)
+    GPIO.digitalWrite(CpGpioMap.GPIO_CELLONOFF, GPIO.GPIO.LOW)
+    
     print 'Initializing Modem...'
-    while True:
-        time.sleep(3)
-        if not GPIO.input(CpGpioMap.GPIO_CELLPWRMON):
-            print "GPIO_CELLPWRMON=LOW"
-            break
-        else:
-            GPIO.output(CpGpioMap.GPIO_CELLENABLE, GPIO.HIGH)
-            time.sleep(.01) # 10ms
-            GPIO.output(CpGpioMap.GPIO_CELLENABLE, GPIO.LOW)
+    #while True:
+    #    time.sleep(3)
+    #    if not GPIO.digitalRead(CpGpioMap.GPIO_CELLPWRMON):
+    #        print "GPIO_CELLPWRMON=LOW"
+    #        break
+    #    else:
+    #        GPIO.digitalWrite(CpGpioMap.GPIO_CELLENABLE, GPIO.GPIO.HIGH)
+    #        time.sleep(.01) # 10ms
+    #        GPIO.digitalWrite(CpGpioMap.GPIO_CELLENABLE, GPIO.GPIO.LOW)
             
     while True:
         print "TOGGLE GPIO_CELLONOFF:HIGH wait 3 sec."
-        GPIO.output(CpGpioMap.GPIO_CELLONOFF, GPIO.HIGH)
+        GPIO.digitalWrite(CpGpioMap.GPIO_CELLONOFF, GPIO.GPIO.HIGH)
         time.sleep(3)
         print "TOGGLE GPIO_CELLONOFF:LOW wait 2 sec."
-        GPIO.output(CpGpioMap.GPIO_CELLONOFF, GPIO.LOW)
+        GPIO.digitalWrite(CpGpioMap.GPIO_CELLONOFF, GPIO.GPIO.LOW)
         time.sleep(2)
-        if GPIO.input(CpGpioMap.GPIO_CELLPWRMON):
+        if GPIO.digitalRead(CpGpioMap.GPIO_CELLPWRMON):
             print "GPIO_CELLPWRMON=HIGH"
             break
 
-    print 'Setting up UART1...'
-    UART.setup("UART1")
-    print 'Setting up UART2...'
-    UART.setup("UART2")
-    print 'Setting up UART4...'
-    UART.setup("UART4")
+   # print 'Setting up UART1...'
+   # UART.setup("UART1")
+   # print 'Setting up UART2...'
+   # UART.setup("UART2")
+   # print 'Setting up UART4...'
+   # UART.setup("UART4")
     
     print 'Modem Initialized' 
 
@@ -88,7 +91,10 @@ def auto_poff():
 
 
 def main(argv):
-    
+   
+
+    GPIO.wiringPiSetupGpio()
+
     runas = 'kore'
     try:
         opts, args = getopt.getopt(argv,"hp:",["provider="])
