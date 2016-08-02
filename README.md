@@ -12,21 +12,21 @@ Example:
 Login to the pi on three separate terminals
 
 1st Terminal (Logging):
-'''python
+```python
 tail -f /var/log/ppp/log
-'''
+```
 
 2nd Terminal (Enalbe Hardware)
-'''python
+```python
 cd ~/apps/modemscripts
 sudo python enablehardware.py
-'''python
+```python
 
 3rd Terminal (PPP Dialer)
-'''python
+```python
 sudo pon hspa-kore # launch hspa-kore script
 sudo poff hspa-kore # kill hspa-kore script
-'''
+```
 
 <strong>enablemodem.py</strong>
 
@@ -35,7 +35,7 @@ a PPP connection to the cellular provider allowing application level TCP
 access without the complexities of interfacing with the modem. 
 
 Example:
-'''python
+```python
 sudo enablemodem.py -p hspa-kore
-'''
+```
 
