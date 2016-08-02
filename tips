@@ -1,6 +1,13 @@
 ### File Permissions
 chmod ugo+x HelloWorldTest2
 
+# pon script-name
+sudo pon hspa-kore
+
+# poff script-name
+sudo poff hspa-kore
+
+
 ### PPP Dialer ###
 pppd call verizon
 

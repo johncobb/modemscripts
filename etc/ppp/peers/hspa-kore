@@ -1,5 +1,5 @@
 debug
-auth
+noauth
 /dev/serial0
 115200
 nocrtscts
@@ -21,5 +21,5 @@ ipcp-accept-local
 ipcp-accept-remote
 lcp-echo-failure 4
 lcp-echo-interval 65535
-connect "/usr/sbin/chat -v -V -S -s -t3 -f /etc/ppp/peers/hspa-connect-chat"
+connect "/usr/sbin/chat -v -V -S -s -t3 -f /etc/ppp/peers/hspa-kore-connect-chat"
 #disconnect /etc/ppp/peers/gprs-disconnect-chat
