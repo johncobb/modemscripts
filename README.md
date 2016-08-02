@@ -1,6 +1,6 @@
 
-Modem Scripts:
-enablehardware.py
+##Modem Scripts:##
+**enablehardware.py**
 
 Scripts used to enable and crontrol the Janus-RC modem.
 Running this command will powerup the onboard Janus-RC (Telit Modem)
@@ -23,7 +23,7 @@ sudo python enablehardware.py
 sudo pon hspa-kore # launch hspa-kore script
 sudo poff hspa-kore # kill hspa-kore script
 
-enablemodem.py
+**enablemodem.py**
 
 Script used to enable the modem hardware and start (pon) the PPP dialer. This establishes
 a PPP connection to the cellular provider allowing application level TCP
