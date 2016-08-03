@@ -33,15 +33,15 @@ def modem_init():
     GPIO.digitalWrite(CpGpioMap.GPIO_CELLONOFF, GPIO.GPIO.LOW)
     
     print 'Initializing Modem...'
-    #while True:
-    #    time.sleep(3)
-    #    if not GPIO.digitalRead(CpGpioMap.GPIO_CELLPWRMON):
-    #        print "GPIO_CELLPWRMON=LOW"
-    #        break
-    #    else:
-    #        GPIO.digitalWrite(CpGpioMap.GPIO_CELLENABLE, GPIO.GPIO.HIGH)
-    #        time.sleep(.01) # 10ms
-    #        GPIO.digitalWrite(CpGpioMap.GPIO_CELLENABLE, GPIO.GPIO.LOW)
+    while True:
+        time.sleep(3)
+        if not GPIO.digitalRead(CpGpioMap.GPIO_CELLPWRMON):
+            print "GPIO_CELLPWRMON=LOW"
+            break
+        else:
+            GPIO.digitalWrite(CpGpioMap.GPIO_CELLENABLE, GPIO.GPIO.HIGH)
+            time.sleep(.01) # 10ms
+            GPIO.digitalWrite(CpGpioMap.GPIO_CELLENABLE, GPIO.GPIO.LOW)
             
     while True:
         print "TOGGLE GPIO_CELLONOFF:HIGH wait 3 sec."

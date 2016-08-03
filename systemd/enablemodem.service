@@ -1,0 +1,20 @@
+[Unit]
+
+Description=Led Service Test
+
+After=network.target
+
+[Service]
+
+Type=simple
+#Type=forking
+#PIDFile=/var/run/ledtest.pid
+
+WorkingDirectory=/home/pi/apps/modemscripts/
+ExecStart=/usr/bin/python /home/pi/apps/modemscripts/enablemodem.py
+KillMode=process
+#RemainAfterExit=true
+
+[Install]
+
+WantedBy=multi-user.target
