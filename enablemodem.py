@@ -111,7 +111,6 @@ def main(argv):
             provider = arg.strip()
             
             modem_init()
-            
             time.sleep(5)
             auto_pon(provider)
             

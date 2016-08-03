@@ -27,7 +27,11 @@ sudo python enablehardware.py
 sudo pon hspa-kore # launch hspa-kore script
 sudo poff hspa-kore # kill hspa-kore script
 ```
-
+4th Add route so we can ssh through the ppp0 connection
+(This can be added to /etc/ppp/ip-up.d/addroute)
+```
+sudo route add default dev ppp0
+```
 <b>enablemodem.py</b>
 
 Script used to enable the modem hardware and start (pon) the PPP dialer. This establishes
