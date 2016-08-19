@@ -8,6 +8,20 @@ It does not enumerate the serial port for commands.
 This allows you to test the PPP dialer using pon and poff commands to establish
 a PPP session.
 
+Provisioning Steps:
+First we need to enable serial0. By default the current version of Raspbian comes with this disabled. This needs to be modified in two places.
+
+```
+# 1.) Make a backup pf cmdline.txt
+cp cmdline.txt cmdline_bak.txt
+# 2.) Modify the console parameter from serial0 to tty1
+console=tty1
+
+# 3.) Make a backup of config.txt
+cp config.txt config_bak.txt
+# 4.) Add the enable_uart parameter
+enable_uart=1
+```
 Example:
 Login to the pi on three separate terminals
 
