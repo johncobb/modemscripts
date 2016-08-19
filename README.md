@@ -40,6 +40,6 @@ access without the complexities of interfacing with the modem.
 
 Example:
 ```python
-sudo enablemodem.py -p hspa-kore
+sudo python enablemodem.py -p hspa-kore
 ```
 
