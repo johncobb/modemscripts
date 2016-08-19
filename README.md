@@ -11,20 +11,12 @@ a PPP session.
 Provisioning Steps:
 First we need to enable serial0. By default the current version of Raspbian comes with this disabled. This needs to be modified in two places.
 
-# 1.) Make a backup pf cmdline.txt
+# 1.) Modify the console parameter from serial0 to tty1
 ```
-cp cmdline.txt cmdline_bak.txt
-```
-# 2.) Modify the console parameter from serial0 to tty1
-```
+# Modify the cmdline.txt and set the console parameter from seril0 to tty0
 console=tty1
-```
-# 3.) Make a backup of config.txt
-```
-cp config.txt config_bak.txt
-```
-# 4.) Add the enable_uart parameter
-```
+
+# 2.) Enable serial0 by adding the enable_uart entry to the end of config.txt
 enable_uart=1
 ```
 Example:
