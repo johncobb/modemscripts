@@ -14,7 +14,7 @@ First we need to enable serial0. By default the current version of Raspbian come
 <b>Enabling serial0:</b>
 ```
 # Navigate to the boot folder under root cd /boot
-# 1.) Modify the cmdline.txt and change the console parameter from seril0 to tty0
+# 1.) Modify the cmdline.txt and change the console parameter from seril0 to tty1
 console=tty1
 
 # 2.) Enable serial0 by adding the enable_uart entry to the end of config.txt
