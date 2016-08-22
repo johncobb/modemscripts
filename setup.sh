@@ -12,6 +12,7 @@
 echo "Running modemscripts setup..."
 
 apt-get update
+apt-get install git
 apt-get install ppp
 apt-get install python-dev python-pip
 pip install wiringpi2
