@@ -21,7 +21,7 @@ pip install pyserial
 #apt-get install openssh-server
 #apt-get install expect
 
-git clone https://github.com/johncobb/modemscripts.git /home/pi/apps/modemscripts2
+#git clone https://github.com/johncobb/modemscripts.git /home/pi/apps/modemscripts
 
 # Copy PPP dependencies
 cp /apps/modemscripts/etc/ppp/options /etc/ppp/options
