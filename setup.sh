@@ -23,13 +23,25 @@ pip install pyserial
 
 #git clone https://github.com/johncobb/modemscripts.git /home/pi/apps/modemscripts
 
-# Copy PPP dependencies
-cp /apps/modemscripts/etc/ppp/options /etc/ppp/options
-cp /apps/modemscripts/etc/ppp/peers/*.* /etc/ppp/peers
-cp /apps/modemscripts/etc/ppp/ip-up.d/addroute /etc/ppp/ip-up.d/addroute
+if test -d /etc/ppp/peers; then
+	echo "exists";
+else
+	sudo mkdir /etc/ppp/peers;
+	echo "etc/ppp/peers not found. creating...";
+fi
 
+
+# Copy PPP dependencies
+sudo cp /home/pi/apps/modemscripts/etc/ppp/options /etc/ppp/options
+sudo cp /home/pi/apps/modemscripts/etc/ppp/peers/* /etc/ppp/peers
+sudo cp /home/pi/apps/modemscripts/etc/ppp/ip-up.d/addroute /etc/ppp/ip-up.d/addroute
+
+
+#git clone https://github.com/johncobb/modemscripts.git /home/pi/apps/modemscripts
+
+#git clone https://github.com/johncobb/modemscripts.git /home/pi/apps/modemscripts
 # copy service descriptor to systemd folder
-cp /apps/modemscripts/systemd/enablemodem.service /etc/systemd/system/enablemodem.service
+cp /home/pi/apps/modemscripts/systemd/enablemodem.service /etc/systemd/system/enablemodem.service
 
 systemctl enable enablemodem.service
 systemctl start enablemodem.service
