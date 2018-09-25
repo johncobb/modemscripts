@@ -1,3 +1,4 @@
+import os, sys
 import threading
 import time
 import Queue
@@ -5,7 +6,7 @@ import subprocess
 import sys, getopt
 #import Adafruit_BBIO.UART as UART
 #import Adafruit_BBIO.GPIO as GPIO
-import wiringpi as GPIO
+import RPi.GPIO as GPIO
 
 
 
@@ -17,10 +18,40 @@ class CpGpioMap():
     GPIO_LED1 = 23
     GPIO_LED2 = 24
 
-            
+
+class UbloxGpioMap():
+    GPIO_POWERPIN = 29
+    GPIO_RESETPIN = 31
+
+
+def modem_init():
+    #modem_init_telit()
+    modem_init_ublox()
+
+def toggle_power_pin():
+    GPIO.output(UbloxGpioMap.GPIO_POWERPIN, True)
+    time.sleep(0.1)
+    GPIO.output(UbloxGpioMap.GPIO_POWERPIN, False)
+
+def enable_rtscts():
+    os.system("bin/rpirtscts on")
+
+def disable_rtscts():
+    os.system("bin/rpirtscts off")
+
+def modem_init_ublox():
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setwarnings(False)
+    GPIO.setup(UbloxGpioMap.GPIO_POWERPIN, GPIO.OUT)
+    GPIO.setup(UbloxGpioMap.GPIO_RESETPIN, GPIO.OUT)
+
+    GPIO.output(UbloxGpioMap.GPIO_POWERPIN, False)
+    GPIO.output(UbloxGpioMap.GPIO_RESETPIN, False)
+    enable_rtscts()
+
 
 # !!! This method must be called before creating the modem object !!!
-def modem_init():
+def modem_init_telit():
 
     print 'Initializing GPIO(s)'
     GPIO.pinMode(CpGpioMap.GPIO_CELLENABLE, GPIO.OUTPUT) #CELL_ENABLE
@@ -65,7 +96,7 @@ def main(argv):
 
 if __name__ == '__main__':
 
-    GPIO.wiringPiSetupGpio()
+    #GPIO.wiringPiSetupGpio()
 
     modem_init()
 

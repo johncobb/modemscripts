@@ -1,8 +1,7 @@
 debug
 noauth
-/dev/ttyO4
+/dev/ttyAMA0
 115200
-nocrtscts
 defaultroute
 usepeerdns
 holdoff 2
